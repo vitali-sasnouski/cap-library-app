@@ -1,0 +1,89 @@
+{
+    "name": "cap-library-app",
+    "version": "1.0.0",
+    "description": "A simple CAP project.",
+    "repository": "<Add your repository here>",
+    "license": "UNLICENSED",
+    "private": true,
+    "dependencies": {
+        "@sap/cds": "^6",
+        "@sap/hana-client": "^2.14.24",
+        "@sap/xsenv": "^3.4.0",
+        "@sap/xssec": "^3.2.14",
+        "express": "^4",
+        "hdb": "^0.19.0",
+        "passport": "^0.6.0"
+    },
+    "devDependencies": {
+        "@sap/ux-specification": "^1.102.14",
+        "rimraf": "^3.0.2",
+        "sqlite3": "^5.0.4"
+    },
+    "scripts": {
+        "start": "cds run",
+        "watch-zlabreader": "cds watch --open zlabreader/webapp/index.html?sap-ui-xx-viewCache=false",
+        "undeploy": "cf undeploy cap-library-app --delete-services --delete-service-keys --delete-service-brokers",
+        "build": "rimraf resources mta_archives && mbt build --mtar archive",
+        "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+        "watch-zlabbook": "cds watch --open zlabbook/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-zlabauthor": "cds watch --open zlabauthor/webapp/index.html?sap-ui-xx-viewCache=false",
+        "watch-zlabbooking": "cds watch --open zlabbooking/webapp/index.html?sap-ui-xx-viewCache=false"
+    },
+    "engines": {
+        "node": "^16.15"
+    },
+    "eslintConfig": {
+        "extends": "eslint:recommended",
+        "env": {
+            "es2020": true,
+            "node": true,
+            "jest": true,
+            "mocha": true
+        },
+        "globals": {
+            "SELECT": true,
+            "INSERT": true,
+            "UPDATE": true,
+            "DELETE": true,
+            "CREATE": true,
+            "DROP": true,
+            "CDL": true,
+            "CQL": true,
+            "CXL": true,
+            "cds": true
+        },
+        "rules": {
+            "no-console": "off",
+            "require-atomic-updates": "off"
+        }
+    },
+    "cds": {
+        "requires": {
+            "[development]": {
+                "db": {
+                    "kind": "sqlite",
+                    "credentials": {
+                        "database": ":memory:"
+                    }
+                }
+            },
+            "[production]": {
+                "db": {
+                    "kind": "hana-cloud"
+                },
+                "auth": {
+                    "kind": "xsuaa"
+                }
+            }
+        }
+    },
+    "hana": {
+        "deploy-format": "hdbtable"
+    },
+    "sapux": [
+        "app/zlabreader",
+        "app/zlabbook",
+        "app/zlabauthor",
+        "app/zlabbooking"
+    ]
+}

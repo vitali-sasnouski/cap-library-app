@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="LibraryService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="Booking" EntityType="LibraryService.Booking">
+                    <NavigationPropertyBinding Path="readerID" Target="Readers"/>
+                    <NavigationPropertyBinding Path="bookID" Target="Books"/>
+                    <NavigationPropertyBinding Path="bookingStatus" Target="Statuses"/>
+                </EntitySet>
+                <EntitySet Name="Books" EntityType="LibraryService.Books">
+                    <NavigationPropertyBinding Path="toAuthor" Target="Authors"/>
+                    <NavigationPropertyBinding Path="currencyCode" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="status" Target="BookStatuses"/>
+                </EntitySet>
+                <EntitySet Name="Readers" EntityType="LibraryService.Readers"/>
+                <EntitySet Name="Authors" EntityType="LibraryService.Authors">
+                    <NavigationPropertyBinding Path="book" Target="Books"/>
+                </EntitySet>
+                <EntitySet Name="Statuses" EntityType="LibraryService.Statuses"/>
+                <EntitySet Name="BookStatuses" EntityType="LibraryService.BookStatuses"/>
+                <EntitySet Name="Currencies" EntityType="LibraryService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="LibraryService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="Booking">
+                <Key>
+                    <PropertyRef Name="bookingUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="bookingUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="bookingID" Type="Edm.Int32"/>
+                <NavigationProperty Name="readerID" Type="LibraryService.Readers">
+                    <ReferentialConstraint Property="readerID_readerUUID" ReferencedProperty="readerUUID"/>
+                </NavigationProperty>
+                <Property Name="readerID_readerUUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="bookID" Type="LibraryService.Books">
+                    <ReferentialConstraint Property="bookID_bookUUID" ReferencedProperty="bookUUID"/>
+                </NavigationProperty>
+                <Property Name="bookID_bookUUID" Type="Edm.Guid"/>
+                <NavigationProperty Name="bookingStatus" Type="LibraryService.Statuses">
+                    <ReferentialConstraint Property="bookingStatus_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="bookingStatus_ID" Type="Edm.String"/>
+                <Property Name="beginDate" Type="Edm.Date"/>
+                <Property Name="beginTime" Type="Edm.TimeOfDay"/>
+                <Property Name="endDate" Type="Edm.Date"/>
+                <Property Name="endTime" Type="Edm.TimeOfDay"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Books">
+                <Key>
+                    <PropertyRef Name="bookUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="bookUUID" Type="Edm.Guid" Nullable="false"/>
+                <NavigationProperty Name="toAuthor" Type="LibraryService.Authors" Partner="book">
+                    <ReferentialConstraint Property="toAuthor_authorUUID" ReferencedProperty="authorUUID"/>
+                </NavigationProperty>
+                <Property Name="toAuthor_authorUUID" Type="Edm.Guid"/>
+                <Property Name="bookID" Type="Edm.Int32"/>
+                <Property Name="bookName" Type="Edm.String" MaxLength="60"/>
+                <Property Name="pageNumber" Type="Edm.Int32"/>
+                <Property Name="copyQty" Type="Edm.Int32"/>
+                <Property Name="shippedQty" Type="Edm.Int32"/>
+                <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <NavigationProperty Name="currencyCode" Type="LibraryService.Currencies">
+                    <ReferentialConstraint Property="currencyCode_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="currencyCode_code" Type="Edm.String" MaxLength="3"/>
+                <NavigationProperty Name="status" Type="LibraryService.BookStatuses">
+                    <ReferentialConstraint Property="status_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="status_ID" Type="Edm.String"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Readers">
+                <Key>
+                    <PropertyRef Name="readerUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="readerUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="readerID" Type="Edm.Int32"/>
+                <Property Name="firstName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="lastName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="readerBirthday" Type="Edm.Date"/>
+                <Property Name="phoneNumber" Type="Edm.String" MaxLength="15"/>
+                <Property Name="image" Type="Edm.Stream"/>
+            </EntityType>
+            <EntityType Name="Authors">
+                <Key>
+                    <PropertyRef Name="authorUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="authorUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="authorID" Type="Edm.Int32"/>
+                <Property Name="firstName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="lastName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="birthday" Type="Edm.Date"/>
+                <Property Name="country" Type="Edm.String" MaxLength="30"/>
+                <Property Name="image" Type="Edm.Stream"/>
+                <NavigationProperty Name="book" Type="Collection(LibraryService.Books)" Partner="toAuthor"/>
+            </EntityType>
+            <EntityType Name="Statuses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="BookStatuses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <Property Name="numcode" Type="Edm.Int32"/>
+                <Property Name="exponent" Type="Edm.Int32"/>
+                <Property Name="minor" Type="Edm.String"/>
+                <NavigationProperty Name="texts" Type="Collection(LibraryService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="LibraryService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Annotations Target="LibraryService.Booking/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="LibraryService.Booking/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="LibraryService.Booking/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="LibraryService.Booking/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="LibraryService.Booking/image">
+                                        <Annotation Term="Core.MediaType" String="image/png"/>
+                                    </Annotations>
+                                    <Annotations Target="LibraryService.Books/createdAt">
+                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                        <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                        </Annotations>
+                                        <Annotations Target="LibraryService.Books/createdBy">
+                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                </Annotations>
+                                                <Annotations Target="LibraryService.Books/modifiedAt">
+                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                    <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                    </Annotations>
+                                                    <Annotations Target="LibraryService.Books/modifiedBy">
+                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                            <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                            </Annotations>
+                                                            <Annotations Target="LibraryService.Books/currencyCode">
+                                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                    <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                    </Annotations>
+                                                                    <Annotations Target="LibraryService.Books/currencyCode_code">
+                                                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                            <Annotation Term="Common.ValueList">
+                                                                                <Record Type="Common.ValueListType">
+                                                                                    <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                        <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                        <PropertyValue Property="Parameters">
+                                                                                            <Collection>
+                                                                                                <Record Type="Common.ValueListParameterInOut">
+                                                                                                    <PropertyValue Property="LocalDataProperty" PropertyPath="currencyCode_code"/>
+                                                                                                    <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                                </Record>
+                                                                                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                    <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                                </Record>
+                                                                                            </Collection>
+                                                                                        </PropertyValue>
+                                                                                    </Record>
+                                                                                </Annotation>
+                                                                                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="LibraryService.Books/image">
+                                                                                    <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="LibraryService.Readers/createdAt">
+                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                    <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="LibraryService.Readers/createdBy">
+                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                        <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                        <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="LibraryService.Readers/modifiedAt">
+                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="LibraryService.Readers/modifiedBy">
+                                                                                                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="LibraryService.Readers/image">
+                                                                                                            <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="LibraryService.Authors/createdAt">
+                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                                                                                                            </Annotations>
+                                                                                                            <Annotations Target="LibraryService.Authors/createdBy">
+                                                                                                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Immutable" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                    <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                                                                                                                    </Annotations>
+                                                                                                                    <Annotations Target="LibraryService.Authors/modifiedAt">
+                                                                                                                        <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                        <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                        <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                                                                                                                        </Annotations>
+                                                                                                                        <Annotations Target="LibraryService.Authors/modifiedBy">
+                                                                                                                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Computed" Bool="true"/>
+                                                                                                                            <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                                                                                                                <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="LibraryService.Authors/image">
+                                                                                                                                    <Annotation Term="Core.MediaType" String="image/png"/>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="LibraryService.Currencies">
+                                                                                                                                    <Annotation Term="UI.Identification">
+                                                                                                                                        <Collection>
+                                                                                                                                            <Record Type="UI.DataField">
+                                                                                                                                                <PropertyValue Property="Value" Path="name"/>
+                                                                                                                                            </Record>
+                                                                                                                                        </Collection>
+                                                                                                                                    </Annotation>
+                                                                                                                                </Annotations>
+                                                                                                                                <Annotations Target="LibraryService.Currencies/name">
+                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                    </Annotations>
+                                                                                                                                    <Annotations Target="LibraryService.Currencies/descr">
+                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                        </Annotations>
+                                                                                                                                        <Annotations Target="LibraryService.Currencies/code">
+                                                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                            </Annotations>
+                                                                                                                                            <Annotations Target="LibraryService.Currencies/symbol">
+                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                                                                                </Annotations>
+                                                                                                                                                <Annotations Target="LibraryService.Currencies_texts/locale">
+                                                                                                                                                    <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                                                                    </Annotations>
+                                                                                                                                                    <Annotations Target="LibraryService.Currencies_texts/name">
+                                                                                                                                                        <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                                                                        </Annotations>
+                                                                                                                                                        <Annotations Target="LibraryService.Currencies_texts/descr">
+                                                                                                                                                            <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                                                                            </Annotations>
+                                                                                                                                                            <Annotations Target="LibraryService.Currencies_texts/code">
+                                                                                                                                                                <Annotation Term="Common.Text" Path="name"/>
+                                                                                                                                                                <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                                                                                </Annotations>
+                                                                                                                                                            </Schema>
+                                                                                                                                                        </edmx:DataServices>
+                                                                                                                                                    </edmx:Edmx>
