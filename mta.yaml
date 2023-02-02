@@ -8,6 +8,7 @@ modules:
   path: gen/srv
   requires:
   - name: cap-library-app-db
+  - name: uaa_cap-library-app
   provides:
   - name: srv-api
     properties:
@@ -37,6 +38,7 @@ modules:
     parameters:
       service-key:
         name: uaa_cap-library-app-key
+  - name: srv-api
   parameters:
     content:
       instance:
@@ -50,6 +52,12 @@ modules:
           ServiceInstanceName: cap-library-app-xsuaa-service
           ServiceKeyName: uaa_cap-library-app-key
           sap.cloud.service: caplibrary
+        - Authentication: OAuth2UserTokenExchange
+          Name: cap-library-api # choose name for record, then you need to use it in xs-app.json files in Fiori applications
+          TokenServiceInstanceName: cap-library-app-xsuaa-service # name of uaa_... service with org.cloudfoundry.managed-service type
+          TokenServiceKeyName: uaa_cap-library-app-key # name of the uaa key that was declared in ...destination-content section, path: requires-> section which name started with 'uaa'->parameters->service-key
+          URL: ~{srv-api/srv-url} # first part of uri provided in ...-srv section with nodejs type, second part is the property of the srv-api 
+          sap.cloud.service: caplibrary          
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
