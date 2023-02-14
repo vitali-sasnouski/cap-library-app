@@ -3,7 +3,10 @@ using LibraryService as service from '../../srv/services';
 annotate service.Books with @(
     UI        : {
         SelectionFields     : [toAuthor_authorUUID],
-        Identification      : [{Value : bookUUID}],
+        Identification      : [
+            {Value : bookUUID},
+            { $Type : 'UI.DataFieldForAction', Action : 'LibraryService.orderBook', Label : '{i18n>orderBook}'}
+        ],
         LineItem            : [
             {
                 $Type             : 'UI.DataField',

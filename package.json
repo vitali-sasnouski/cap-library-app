@@ -73,6 +73,12 @@
                 },
                 "auth": {
                     "kind": "xsuaa"
+                },
+                "CPIDestination": {
+                    "kind": "rest",
+                    "credentials": {
+                        "destination": "CPI_DESTINATION"
+                    }
                 }
             }
         }

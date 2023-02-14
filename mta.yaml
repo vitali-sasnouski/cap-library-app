@@ -9,6 +9,7 @@ modules:
   requires:
   - name: cap-library-app-db
   - name: uaa_cap-library-app
+  - name: dest_service
   provides:
   - name: srv-api
     properties:
@@ -173,6 +174,11 @@ resources:
     service: xsuaa
     service-name: cap-library-app-xsuaa-service
     service-plan: application
+- name: dest_service                      # Do not work (the error - dest_service isn't found), use manual creation via BTP Cockpit
+  type: org.cloudfoundry.existing-service
+  parameters:
+    service-plan: lite
+    service: destination
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true

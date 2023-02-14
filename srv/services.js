@@ -1,6 +1,7 @@
 const cds = require('@sap/cds');
 
 const constants = require('./constants');
+const cpi = require('./cpi');
 
 module.exports = cds.service.impl(async function () {
 
@@ -68,4 +69,6 @@ module.exports = cds.service.impl(async function () {
             each.returnTheBookEnabled = true;
         }
     });
+
+    this.on('orderBook', 'Books', cpi.orderBook);
 })

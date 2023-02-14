@@ -8,7 +8,9 @@ service LibraryService {
         action returnTheBook();
     };
 
-    entity Books as projection on library.Books;
+    entity Books as projection on library.Books actions {
+        action orderBook(Quantity: Integer @title : 'Order Quantity');
+    };
 
     entity Readers as projection on library.Readers;
 
