@@ -6,6 +6,7 @@
     "license": "UNLICENSED",
     "private": true,
     "dependencies": {
+        "@sap-cloud-sdk/http-client": "^3.0.2",
         "@sap/cds": "^6",
         "@sap/hana-client": "^2.14.24",
         "@sap/xsenv": "^3.4.0",

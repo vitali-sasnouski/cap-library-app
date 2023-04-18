@@ -174,7 +174,7 @@ resources:
     service: xsuaa
     service-name: cap-library-app-xsuaa-service
     service-plan: application
-- name: dest_service                      # Do not work (the error - dest_service isn't found), use manual creation via BTP Cockpit
+- name: dest_service
   type: org.cloudfoundry.existing-service
   parameters:
     service-plan: lite
